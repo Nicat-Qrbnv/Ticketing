@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Random;
 
@@ -9,6 +10,7 @@ public class Ticket {
     private Boolean isPromo;
     private Character stadiumSector;
     private Float allowedWeightInKg;
+    private BigDecimal price;
 
     /**
      * Constructor for full control on initialization
@@ -21,7 +23,7 @@ public class Ticket {
      * @param stadiumSector     - sector/location of the seat in stadium
      * @param allowedWeightInKg - allowed maximum weight of the backpack to carry in
      */
-    public Ticket(String id, String concertHall, Short eventCode, Instant time, Boolean isPromo, Character stadiumSector, Float allowedWeightInKg) {
+    public Ticket(String id, String concertHall, Short eventCode, Instant time, Boolean isPromo, Character stadiumSector, Float allowedWeightInKg, BigDecimal price) {
         setId(id);
         setConcertHall(concertHall);
         setEventCode(eventCode);
@@ -29,6 +31,7 @@ public class Ticket {
         setPromo(isPromo);
         setStadiumSector(stadiumSector);
         setAllowedWeightInKg(allowedWeightInKg);
+        setPrice(price);
     }
 
     /**
@@ -39,7 +42,7 @@ public class Ticket {
      * @param time        - ticket creation time in epoch
      */
     public Ticket(String concertHall, Short eventCode, Instant time) {
-        this(generateRandomId(), concertHall, eventCode, time, null, null, null);
+        this(generateRandomId(), concertHall, eventCode, time, null, null, null, null);
     }
 
     /**
@@ -142,6 +145,14 @@ public class Ticket {
         }
     }
 
+    public void setPrice(BigDecimal price) {
+        if (price == null || price.compareTo(BigDecimal.ZERO) >= 0) {
+            this.price = price;
+        } else {
+            System.out.println("Price can not be negative");
+        }
+    }
+
     /**
      * A method to turn null values into "N/A" value.
      * @param field - the field to turn
@@ -167,13 +178,13 @@ public class Ticket {
                 %s
                 Ticket id: %s | EventCode: %s
                 Date: %s UTC | Venue: %-10s | Sector: %s
-                is%sPromo
+                is%sPromo | Price: %s
                 Allowed Weight: %s kg
                 """.formatted(
                 "-".repeat(6 + getStringValue(time).length() + 10 + 10 + 11 + getStringValue(stadiumSector).length()),
                 getStringValue(id), getStringValue(eventCode),
                 getStringValue(time), getStringValue(concertHall), getStringValue(stadiumSector),
-                (isPromo == null || !isPromo) ? " not " : " ",
+                (isPromo == null || !isPromo) ? " not " : " ", getStringValue(price),
                 getStringValue(allowedWeightInKg)
         );
     }
