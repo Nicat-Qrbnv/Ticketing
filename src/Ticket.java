@@ -1,5 +1,6 @@
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.Random;
 
 public class Ticket {
@@ -166,6 +167,14 @@ public class Ticket {
         } else {
             return field == null ? "N/A" : field.toString();
         }
+    }
+
+    public void getInformationAboutTicketsBySector(Character stadiumSector, List<Ticket> listTickets){
+        listTickets.stream().filter(ticket -> ticket.getStadiumSector().equals(stadiumSector)).forEach(System.out::println);
+    }
+
+    public Character getStadiumSector() {
+        return stadiumSector;
     }
 
     /**
